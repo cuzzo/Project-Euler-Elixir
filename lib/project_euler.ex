@@ -2,13 +2,30 @@ defmodule ProjectEuler do
   def main(args) do
     args
       |> parse_args
-      |> Problem3.run
+      |> Problem4.run
       |> IO.puts
   end
 
   defp parse_args(args) do
     {_, [str], _} = OptionParser.parse(args)
     str
+  end
+end
+
+defmodule Problem4 do
+  defp is_palindrome(i) do
+    str = Integer.to_string(i)
+    len = String.length(str)
+    m_floor = round(Float.floor(len / 2))
+    m_ceil = round(Float.ceil(len / 2))
+    String.slice(str, 0, m_floor) == String.slice(str, m_ceil, len) |> String.reverse
+  end
+
+  def run(str) do
+    (for i <- 1..999, j <- 1..999, do: i*j)
+      |> Enum.filter(fn(x) -> is_palindrome(x) end)
+      |> Enum.sort
+      |> List.last
   end
 end
 
