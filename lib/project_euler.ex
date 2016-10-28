@@ -2,13 +2,32 @@ defmodule ProjectEuler do
   def main(args) do
     args
       |> parse_args
-      |> Problem4.run
+      |> Problem5.run
       |> IO.puts
   end
 
   defp parse_args(args) do
     {_, [str], _} = OptionParser.parse(args)
     str
+  end
+end
+
+defmodule Problem5 do
+  @factors Enum.to_list(2..20)
+
+  def run(str) do
+    solve(@factors, List.last(@factors) + 1)
+  end
+
+  defp solve([], n) do
+    n
+  end
+
+  defp solve([h | t], n) do
+    case rem(n, h) do
+      0 -> solve(t, n)
+      _ -> solve(@factors, n + 1)
+    end
   end
 end
 
