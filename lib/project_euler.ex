@@ -2,13 +2,29 @@ defmodule ProjectEuler do
   def main(args) do
     args
       |> parse_args
-      |> Problem5.run
+      |> Problem6.run
       |> IO.puts
   end
 
   defp parse_args(args) do
     {_, [str], _} = OptionParser.parse(args)
     str
+  end
+end
+
+defmodule Problem6 do
+  @count 100
+
+  def run(str) do
+    squared_sum - sum_of_squares
+  end
+
+  defp squared_sum do
+    1..@count |> Enum.sum |> :math.pow(2)
+  end
+
+  defp sum_of_squares do
+    1..@count |> Enum.map(fn(x) -> x*x end) |> Enum.sum
   end
 end
 
