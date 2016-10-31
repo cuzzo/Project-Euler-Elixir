@@ -2,13 +2,48 @@ defmodule ProjectEuler do
   def main(args) do
     args
       |> parse_args
-      |> Problem6.run
+      |> Problem119.run
       |> IO.puts
   end
 
   defp parse_args(args) do
     {_, [str], _} = OptionParser.parse(args)
     str
+  end
+end
+
+defmodule Problem119 do
+  @count 30
+
+  def run(str) do
+    (for i <- 2..70, j <- 2..10, do: round(:math.pow(i, j)))
+      |> Enum.uniq
+      |> Enum.sort
+      |> Enum.map(fn(x) -> {x, is_digit_power_sum(x)} end)
+      |> Enum.filter(fn(x) -> elem(x, 1) == true end)
+      |> Enum.map(fn(x) -> elem(x, 0) end)
+      |> Enum.at(@count - 1)
+  end
+
+  def is_digit_power_sum(i) do
+    sum = Integer.digits(i) |> Enum.sum
+    if sum < 2 do
+      false
+    else
+      is_digit_power_sum(i, sum, 2)
+    end
+  end
+
+  def is_digit_power_sum(i, sum, pow) do
+    power_sum = :math.pow(sum, pow)
+    cond do
+       power_sum < i ->
+         is_digit_power_sum(i, sum, pow + 1)
+       power_sum == i ->
+         true
+       power_sum > i ->
+         false
+    end
   end
 end
 
