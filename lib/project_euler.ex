@@ -2,7 +2,7 @@ defmodule ProjectEuler do
   def main(args) do
     args
       |> parse_args
-      |> Problem119.run
+      |> Problem7.run
       |> IO.puts
   end
 
@@ -44,6 +44,42 @@ defmodule Problem119 do
        power_sum > i ->
          false
     end
+  end
+end
+
+defmodule Problem7 do
+  @count 10001
+
+  def run(str) do
+    get_primes([], 0, @count) |> List.last
+  end
+
+  defp get_primes(results, n, limit) do
+    cond do
+      length(results) < limit ->
+        if is_prime(n) do
+          get_primes(results ++ [n], n + 1, limit)
+        else
+          get_primes(results, n + 1, limit)
+        end
+      true ->
+        results
+    end
+  end
+
+  defp is_prime(n) when n == 0 do false end
+  defp is_prime(n) when n == 1 do false end
+
+  defp is_prime(n) do
+    limit = trunc(:math.sqrt(n))
+    cond do
+      limit < 2 ->
+        true
+      limit >= 2 ->
+        2..limit
+          |> Enum.filter(fn(x) -> n/x == Float.floor(n/x) end)
+          |> length == 0
+     end
   end
 end
 
